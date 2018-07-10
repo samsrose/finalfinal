@@ -1,5 +1,7 @@
 {
   "name": "final-project",
+  "author": "sam rose",
+  "description": "final project for ucd bootcamp v1.3",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT"

@@ -2,7 +2,7 @@ var mContainer = document.getElementById('three-container');
 var mCamera, mRenderer;
 var mControls;
 
-var mShadowColor = 0x13091B; //0x1B0914
+var mShadowColor = 0x23091B; //0x1B0914
 
 var mScene;
 var mLight;
@@ -10,7 +10,7 @@ var mLight2;
 var mLight3;
 
 var mUseAA = true;
-var mParticleCount = 250000;
+var mParticleCount = 25000;
 var mParticleSystem;
 
 var mDuration;
@@ -23,40 +23,40 @@ var file = document.getElementById("thefile")
 // var mPlayBtn = document.querySelector('.play-btn');
 var mPlayBtnContainer = document.querySelector('.container');
 
-file.onchange = function() {
-    // fileLabel.classList.add('normal');
-    // audio.classList.add('active');
-    var files = this.files;
-    // audio.src = URL.createObjectURL(files[0]);
-    // audio.load();
-    // audio.play();
-    // var context = new AudioContext();
-    // var src = context.createMediaElementSource(audio);
-    // var analyser = context.createAnalyser();
-    // src.connect(analyser);
-    // analyser.connect(context.destination);
-    // analyser.fftSize = 512;
-    // var bufferLength = analyser.frequencyBinCount;
-    // var dataArray = new Uint8Array(bufferLength);
-    // // analyser.getByteFrequencyData(dataArray);
-    // audio.play();
-		const playUrl = URL.createObjectURL(files[0])
-		console.log(playUrl)
-		init(playUrl)
-		mAnalyser.context.resume().then(() => {
-			console.log('Playback resumed successfully');
-		});
+file.onchange = function () {
+  // fileLabel.classList.add('normal');
+  // audio.classList.add('active');
+  var files = this.files;
+  // audio.src = URL.createObjectURL(files[0]);
+  // audio.load();
+  // audio.play();
+  // var context = new AudioContext();
+  // var src = context.createMediaElementSource(audio);
+  // var analyser = context.createAnalyser();
+  // src.connect(analyser);
+  // analyser.connect(context.destination);
+  // analyser.fftSize = 512;
+  // var bufferLength = analyser.frequencyBinCount;
+  // var dataArray = new Uint8Array(bufferLength);
+  // // analyser.getByteFrequencyData(dataArray);
+  // audio.play();
+  const playUrl = URL.createObjectURL(files[0])
+  console.log(playUrl)
+  init(playUrl)
+  mAnalyser.context.resume().then(() => {
+    console.log('Playback resumed successfully');
+  });
 
-		mPlayBtnContainer.style.display = 'none';
-		mAudioElement.currentTime = 0;
-		mAudioElement.play();
+  mPlayBtnContainer.style.display = 'none';
+  mAudioElement.currentTime = 0;
+  mAudioElement.play();
 
-		mCamera.position.set(0, 0, 1200);
+  mCamera.position.set(0, 0, 1200);
 }
 
 
 // mPlayBtn.addEventListener('click', function() {
-	
+
 // });
 // mAudioElement.addEventListener('ended', function() {
 // 		mPlayBtnContainer.style.display = 'flex';
@@ -73,14 +73,14 @@ function init(playUrl) {
 }
 
 mContainer.addEventListener('click', () => {
-		// mAudioElement.pause();
-		if (mAudioElement.paused) {
-			mAudioElement.play()
+  // mAudioElement.pause();
+  if (mAudioElement.paused) {
+    mAudioElement.play()
 
-		}else {
-			mAudioElement.pause()
-		}
- 	})
+  } else {
+    mAudioElement.pause()
+  }
+})
 
 function initAudio(playUrl) {
   mAudioElement.crossOrigin = "anonymous";
@@ -91,7 +91,9 @@ function initAudio(playUrl) {
 }
 
 function initTHREE() {
-  mRenderer = new THREE.WebGLRenderer({antialias: mUseAA});
+  mRenderer = new THREE.WebGLRenderer({
+    antialias: mUseAA
+  });
   mRenderer.setSize(window.innerWidth, window.innerHeight);
   //mRenderer.setClearColor(0xffffff);
   mRenderer.setClearColor(mShadowColor);
@@ -122,10 +124,10 @@ function initControls() {
   mControls.autoRotate = true;
   mControls.enableZoom = true;
   mControls.enablePan = false;
-	mControls.constraint.minDistance = 10;
-	mControls.constraint.maxDistance = 1200;
+  mControls.constraint.minDistance = 600;
+  mControls.constraint.maxDistance = 1200;
   mControls.constraint.minPolarAngle = Math.PI * 0.4;
-	mControls.constraint.maxPolarAngle = Math.PI * 0.6;
+  mControls.constraint.maxPolarAngle = Math.PI * 0.6;
 }
 
 function initParticleSystem() {
@@ -147,8 +149,8 @@ function initParticleSystem() {
   var duration;
   var prefabDelay = 0.00015;
   var vertexDelay = 0.0175;
-  var minDuration = 32.0;
-  var maxDuration = 56.5;
+  var minDuration = 60.0;
+  var maxDuration = 120.0;
 
   mDuration = maxDuration + prefabDelay * mParticleCount + vertexDelay * prefabGeometry.vertices.length;
 
@@ -187,7 +189,7 @@ function initParticleSystem() {
     axis.z = THREE.Math.randFloatSpread(2);
     axis.normalize();
 
-    angle = Math.PI * THREE.Math.randInt(48, 64);
+    angle = Math.PI * THREE.Math.randInt(49, 58);
 
     for (j = 0; j < prefabGeometry.vertices.length; j++) {
       aAxisAngle.array[offset++] = axis.x;
@@ -204,7 +206,7 @@ function initParticleSystem() {
   for (i = 0, offset = 0; i < mParticleCount; i++) {
     //h = i / mParticleCount;
     h = THREE.Math.randFloat(0.5, 1.00);
-    s = THREE.Math.randFloat(0.5, 0.75);
+    s = THREE.Math.randFloat(1.00, 0.75);
     l = THREE.Math.randFloat(0.25, 0.5);
 
     color.setHSL(h, s, l);
@@ -227,13 +229,11 @@ function initParticleSystem() {
       x = 0;
       y = -1400;
       z = 0;
-    }
-    else if (!(i - length + 1)) {
+    } else if (!(i - length + 1)) {
       x = 0;
       y = 1200;
       z = 0;
-    }
-    else {
+    } else {
       x = THREE.Math.randFloatSpread(600);
       y = (-400 + (800 / length) * i) + THREE.Math.randFloatSpread(200);
       z = THREE.Math.randFloatSpread(600);
@@ -250,13 +250,25 @@ function initParticleSystem() {
       shading: THREE.FlatShading,
       side: THREE.DoubleSide,
       defines: {
-        PATH_LENGTH:pathArray.length / 3
+        PATH_LENGTH: pathArray.length / 3
       },
       uniforms: {
-        uTime: {type: 'f', value: 0},
-        uPath: {type: 'fv', value: pathArray},
-        uRadius: {type: 'fv1', value: radiusArray},
-        uRoundness: {type: 'v2', value: new THREE.Vector2(2, 2)}
+        uTime: {
+          type: 'f',
+          value: 0
+        },
+        uPath: {
+          type: 'fv',
+          value: pathArray
+        },
+        uRadius: {
+          type: 'fv1',
+          value: radiusArray
+        },
+        uRoundness: {
+          type: 'v2',
+          value: new THREE.Vector2(2, 2)
+        }
       },
       shaderFunctions: [
         THREE.BAS.ShaderChunk['quaternion_rotation'],
@@ -345,7 +357,7 @@ function update() {
   }
 
   for (i = cap - 1; i >= 0; i--) {
-  //for (i = 0; i < cap; i++) {
+    //for (i = 0; i < cap; i++) {
     dataArray.push(data[i]);
   }
 
@@ -355,7 +367,7 @@ function update() {
   }
 
   for (i = cap - 1; i >= 0; i--) {
-  //for (i = 0; i < cap; i++) {
+    //for (i = 0; i < cap; i++) {
     dataArray.push(data[i]);
   }
 
@@ -363,8 +375,7 @@ function update() {
     if (i && dataArray.length - i > 1) {
       var val = dataArray[i] / 255;
       uniform[i] = Math.max(1, val * val * val * 48);
-    }
-    else {
+    } else {
       uniform[i] = 128;
     }
   }
@@ -419,8 +430,8 @@ SpectrumAnalyzer.prototype = {
     this.binCount = binCount;
     this.analyzerNode.fftSize = binCount * 2;
 
-    this.frequencyByteData = new Uint8Array(binCount); 	// frequency
-    this.timeByteData = new Uint8Array(binCount);		// waveform
+    this.frequencyByteData = new Uint8Array(binCount); // frequency
+    this.timeByteData = new Uint8Array(binCount); // waveform
   },
 
   setSmoothingTimeConstant: function (smoothingTimeConstant) {
@@ -446,7 +457,7 @@ SpectrumAnalyzer.prototype = {
 
     return total / (end - start);
   },
-  getAverageFloat:function(index, count) {
+  getAverageFloat: function (index, count) {
     return this.getAverage(index, count) / 255;
   },
 
@@ -520,7 +531,7 @@ THREE.BAS.PrefabBufferGeometry.prototype.bufferDefaults = function () {
     for (var j = 0; j < prefabVertexCount; j++, offset += 3) {
       var prefabVertex = this.prefabGeometry.vertices[j];
 
-      positionBuffer[offset    ] = prefabVertex.x;
+      positionBuffer[offset] = prefabVertex.x;
       positionBuffer[offset + 1] = prefabVertex.y;
       positionBuffer[offset + 2] = prefabVertex.z;
     }
@@ -532,7 +543,7 @@ THREE.BAS.PrefabBufferGeometry.prototype.bufferDefaults = function () {
 };
 
 // todo test
-THREE.BAS.PrefabBufferGeometry.prototype.bufferUvs = function() {
+THREE.BAS.PrefabBufferGeometry.prototype.bufferUvs = function () {
   var prefabFaceCount = this.prefabGeometry.faces.length;
   var prefabVertexCount = this.prefabVertexCount = this.prefabGeometry.vertices.length;
   var prefabUvs = [];
@@ -575,12 +586,12 @@ THREE.BAS.PrefabBufferGeometry.prototype.computeVertexNormals = function () {
 
   var vA, vB, vC,
 
-  pA = new THREE.Vector3(),
-  pB = new THREE.Vector3(),
-  pC = new THREE.Vector3(),
+    pA = new THREE.Vector3(),
+    pB = new THREE.Vector3(),
+    pC = new THREE.Vector3(),
 
-  cb = new THREE.Vector3(),
-  ab = new THREE.Vector3();
+    cb = new THREE.Vector3(),
+    ab = new THREE.Vector3();
 
   var indices = index.array;
   var prefabIndexCount = this.prefabGeometry.faces.length * 3;
@@ -744,94 +755,94 @@ THREE.BAS.BaseAnimationMaterial.prototype.setUniformValues = function (values) {
   }
 };
 
-THREE.BAS.PhongAnimationMaterial = function(parameters, uniformValues) {
-    THREE.BAS.BaseAnimationMaterial.call(this, parameters);
+THREE.BAS.PhongAnimationMaterial = function (parameters, uniformValues) {
+  THREE.BAS.BaseAnimationMaterial.call(this, parameters);
 
-    var phongShader = THREE.ShaderLib['phong'];
+  var phongShader = THREE.ShaderLib['phong'];
 
-    this.uniforms = THREE.UniformsUtils.merge([phongShader.uniforms, this.uniforms]);
-    this.lights = true;
-    this.vertexShader = this._concatVertexShader();
-    this.fragmentShader = phongShader.fragmentShader;
+  this.uniforms = THREE.UniformsUtils.merge([phongShader.uniforms, this.uniforms]);
+  this.lights = true;
+  this.vertexShader = this._concatVertexShader();
+  this.fragmentShader = phongShader.fragmentShader;
 
-    // todo add missing default defines
-    uniformValues.map && (this.defines['USE_MAP'] = '');
-    uniformValues.normalMap && (this.defines['USE_NORMALMAP'] = '');
+  // todo add missing default defines
+  uniformValues.map && (this.defines['USE_MAP'] = '');
+  uniformValues.normalMap && (this.defines['USE_NORMALMAP'] = '');
 
-    this.setUniformValues(uniformValues);
+  this.setUniformValues(uniformValues);
 };
 THREE.BAS.PhongAnimationMaterial.prototype = Object.create(THREE.BAS.BaseAnimationMaterial.prototype);
 THREE.BAS.PhongAnimationMaterial.prototype.constructor = THREE.BAS.PhongAnimationMaterial;
 
-THREE.BAS.PhongAnimationMaterial.prototype._concatVertexShader = function() {
-    // based on THREE.ShaderLib.phong
-    return [
-        "#define PHONG",
+THREE.BAS.PhongAnimationMaterial.prototype._concatVertexShader = function () {
+  // based on THREE.ShaderLib.phong
+  return [
+    "#define PHONG",
 
-        "varying vec3 vViewPosition;",
+    "varying vec3 vViewPosition;",
 
-        "#ifndef FLAT_SHADED",
+    "#ifndef FLAT_SHADED",
 
-        "	varying vec3 vNormal;",
+    "	varying vec3 vNormal;",
 
-        "#endif",
+    "#endif",
 
-        THREE.ShaderChunk[ "common" ],
-        THREE.ShaderChunk[ "uv_pars_vertex" ],
-        THREE.ShaderChunk[ "uv2_pars_vertex" ],
-        THREE.ShaderChunk[ "displacementmap_pars_vertex" ],
-        THREE.ShaderChunk[ "envmap_pars_vertex" ],
-        THREE.ShaderChunk[ "lights_phong_pars_vertex" ],
-        THREE.ShaderChunk[ "color_pars_vertex" ],
-        THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-        THREE.ShaderChunk[ "skinning_pars_vertex" ],
-        THREE.ShaderChunk[ "shadowmap_pars_vertex" ],
-        THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+    THREE.ShaderChunk["common"],
+    THREE.ShaderChunk["uv_pars_vertex"],
+    THREE.ShaderChunk["uv2_pars_vertex"],
+    THREE.ShaderChunk["displacementmap_pars_vertex"],
+    THREE.ShaderChunk["envmap_pars_vertex"],
+    THREE.ShaderChunk["lights_phong_pars_vertex"],
+    THREE.ShaderChunk["color_pars_vertex"],
+    THREE.ShaderChunk["morphtarget_pars_vertex"],
+    THREE.ShaderChunk["skinning_pars_vertex"],
+    THREE.ShaderChunk["shadowmap_pars_vertex"],
+    THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
-        this._concatFunctions(),
+    this._concatFunctions(),
 
-        this._concatParameters(),
+    this._concatParameters(),
 
-        "void main() {",
+    "void main() {",
 
-        this._concatVertexInit(),
+    this._concatVertexInit(),
 
-        THREE.ShaderChunk[ "uv_vertex" ],
-        THREE.ShaderChunk[ "uv2_vertex" ],
-        THREE.ShaderChunk[ "color_vertex" ],
-        THREE.ShaderChunk[ "beginnormal_vertex" ],
+    THREE.ShaderChunk["uv_vertex"],
+    THREE.ShaderChunk["uv2_vertex"],
+    THREE.ShaderChunk["color_vertex"],
+    THREE.ShaderChunk["beginnormal_vertex"],
 
-        this._concatTransformNormal(),
+    this._concatTransformNormal(),
 
-        THREE.ShaderChunk[ "morphnormal_vertex" ],
-        THREE.ShaderChunk[ "skinbase_vertex" ],
-        THREE.ShaderChunk[ "skinnormal_vertex" ],
-        THREE.ShaderChunk[ "defaultnormal_vertex" ],
+    THREE.ShaderChunk["morphnormal_vertex"],
+    THREE.ShaderChunk["skinbase_vertex"],
+    THREE.ShaderChunk["skinnormal_vertex"],
+    THREE.ShaderChunk["defaultnormal_vertex"],
 
-        "#ifndef FLAT_SHADED", // Normal computed with derivatives when FLAT_SHADED
+    "#ifndef FLAT_SHADED", // Normal computed with derivatives when FLAT_SHADED
 
-        "	vNormal = normalize( transformedNormal );",
+    "	vNormal = normalize( transformedNormal );",
 
-        "#endif",
+    "#endif",
 
-        THREE.ShaderChunk[ "begin_vertex" ],
+    THREE.ShaderChunk["begin_vertex"],
 
-        this._concatTransformPosition(),
+    this._concatTransformPosition(),
 
-        THREE.ShaderChunk[ "displacementmap_vertex" ],
-        THREE.ShaderChunk[ "morphtarget_vertex" ],
-        THREE.ShaderChunk[ "skinning_vertex" ],
-        THREE.ShaderChunk[ "project_vertex" ],
-        THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+    THREE.ShaderChunk["displacementmap_vertex"],
+    THREE.ShaderChunk["morphtarget_vertex"],
+    THREE.ShaderChunk["skinning_vertex"],
+    THREE.ShaderChunk["project_vertex"],
+    THREE.ShaderChunk["logdepthbuf_vertex"],
 
-        "	vViewPosition = - mvPosition.xyz;",
+    "	vViewPosition = - mvPosition.xyz;",
 
-        THREE.ShaderChunk[ "worldpos_vertex" ],
-        THREE.ShaderChunk[ "envmap_vertex" ],
-        THREE.ShaderChunk[ "lights_phong_vertex" ],
-        THREE.ShaderChunk[ "shadowmap_vertex" ],
+    THREE.ShaderChunk["worldpos_vertex"],
+    THREE.ShaderChunk["envmap_vertex"],
+    THREE.ShaderChunk["lights_phong_vertex"],
+    THREE.ShaderChunk["shadowmap_vertex"],
 
-        "}"
+    "}"
 
-    ].join( "\n" );
+  ].join("\n");
 };
