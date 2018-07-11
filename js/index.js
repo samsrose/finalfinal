@@ -73,7 +73,7 @@ function init(playUrl) {
 }
 
 mContainer.addEventListener('click', () => {
-  // mAudioElement.pause();
+  // mAudioElement.pause();mAudioElement
   if (mAudioElement.paused) {
     mAudioElement.play()
 
